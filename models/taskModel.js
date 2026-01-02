@@ -1,28 +1,21 @@
-const tasks = [ 
-    { id: 1, title: 'Task One', description: 'This is the first task' },
-    { id: 2, title: 'Task Two', description: 'This is the second task' },
-    { id: 3, title: 'Task Three', description: 'This is the third task' }
-]
+const mongoose = require('mongoose');
 
-let nextId = 4;
+const taskSchema = new mongoose.Schema({
+    title : {
+        type: String,
+        required: true,
+        trim : true 
+    } ,
+    description : {
+        type: String,
+        default : ''
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    }}, { timestamps: true }
+);
 
-const getAllTasks = () => {
-    return tasks;
-}
+const Task = mongoose.model('Task', taskSchema);
 
-const getTaskById = (id) => {
-    return tasks.find(task => task.id === id);
-}
-
-const addTask = (task) => {
-    const newTask = { id: nextId, ...task };
-    nextId++;
-    tasks.push(newTask);
-    return newTask;
-}
-
-module.exports = {
-    getAllTasks,
-    getTaskById,
-    addTask
-};
+module.exports = Task;
